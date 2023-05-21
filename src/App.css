@@ -45,3 +45,17 @@
   justify-content: center;
   gap:1rem;
 }
+.flexEvenly{
+  display: flex;
+  justify-content: space-evenly;
+}
+ul {
+  list-style: none;
+  padding: 0;
+}
+.flexBetween{
+  display:flex;
+  justify-content: space-between;
+}
+
+

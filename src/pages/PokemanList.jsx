@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import { useState, useEffect } from "react";
 import { MdArrowBackIosNew, MdArrowForwardIos } from "react-icons/md";
 import axios from "axios";
@@ -50,40 +51,52 @@ const PokemonList = () => {
         value={searchTerm}
         onChange={handleSearch}
       />
-      <ul>
-        {currentPokemon.map((pokemon) => (
-          <li key={pokemon.name}>{pokemon.name}</li>
+      <ol>
+        {currentPokemon.map((pokemon, index) => (
+          <div key={index} className="flexBetween">
+            <p>{(currentPage - 1) * 10 + index + 1}</p>
+            <p>{pokemon.name}</p>
+          </div>
         ))}
-      </ul>
+      </ol>
       <Pagination
         pokemonPerPage={pokemonPerPage}
         totalPokemon={filteredPokemon.length}
         paginate={paginate}
+        setCurrentPage={setCurrentPage}
       />
     </div>
   );
 };
 
 // eslint-disable-next-line react/prop-types
-const Pagination = ({ pokemonPerPage, totalPokemon, paginate }) => {
+const Pagination = ({
+  pokemonPerPage,
+  totalPokemon,
+  paginate,
+  setCurrentPage,
+}) => {
   const pageNumbers = [];
   const [presentPage, setPresentPage] = useState(1);
 
-  const Increment = () => {
+  const Increment = (value) => {
     if (presentPage != Math.ceil(totalPokemon / pokemonPerPage)) {
-      setPresentPage((prestate) => prestate + 1);
-      paginate(presentPage);
+      setPresentPage(value);
+      setCurrentPage(value);
+      paginate(value);
     }
   };
-  const Decrement = () => {
+  const Decrement = (value) => {
     if (presentPage > 1) {
-      setPresentPage((prestate) => prestate - 1);
-      paginate(presentPage);
+      setPresentPage(value);
+      setCurrentPage(value);
+      paginate(value);
     }
   };
 
   const handleLast = () => {
     setPresentPage(Math.ceil(totalPokemon / pokemonPerPage));
+    setCurrentPage(Math.ceil(totalPokemon / pokemonPerPage));
     paginate(Math.ceil(totalPokemon / pokemonPerPage));
   };
   for (let i = 1; i <= Math.ceil(totalPokemon / pokemonPerPage); i++) {
@@ -94,7 +107,10 @@ const Pagination = ({ pokemonPerPage, totalPokemon, paginate }) => {
     <nav>
       <div className="pagination">
         <div className="page-item">
-          <button onClick={Decrement} className="page-link">
+          <button
+            onClick={() => Decrement(presentPage - 1)}
+            className="page-link"
+          >
             <MdArrowBackIosNew />
           </button>
         </div>
@@ -135,7 +151,10 @@ const Pagination = ({ pokemonPerPage, totalPokemon, paginate }) => {
         </div>
 
         <div className="page-item">
-          <button onClick={Increment} className="page-link">
+          <button
+            onClick={() => Increment(presentPage + 1)}
+            className="page-link"
+          >
             <MdArrowForwardIos />
           </button>
         </div>

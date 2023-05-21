@@ -63,11 +63,11 @@ const LazyLoadPokemonList = () => {
         value={searchTerm}
         onChange={handleSearch}
       />
-      <ul>
-        {filteredPokemon.map((pokemon) => (
-          <li key={pokemon.name}>{pokemon.name}</li>
+      <ol>
+        {filteredPokemon.map((pokemon, index) => (
+          <li key={index}>{pokemon.name}</li>
         ))}
-      </ul>
+      </ol>
       {loading && <p>Loading...</p>}
     </div>
   );
